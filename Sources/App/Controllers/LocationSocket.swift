@@ -36,48 +36,9 @@ final class LocationSocket {
             ws.onClose = { sock, code, reason, clean in
             
                 let index = self.socks.index(where: {$0 === sock})
-                self.socks.remove(at: index!)
+                self.socks.remove(at: index ?? 0)
                 print("Closed.")
             }
         })
     }
-    
-    func parseJSON(jsonString:String) -> Form? {
-        var object:Form?
-        do {
-            object = try JSONDecoder().decode(Form.self, from: jsonString.data(using: .utf8)!)
-        } catch {
-            print(error)
-        }
-        return object
-    }
 }
-
-struct Form: Codable {
-    let lat: String
-    let long: String
-    let id: String
-    var sock: WebSocket?
-    let jsonEncoder = JSONEncoder()
-    private enum CodingKeys: String, CodingKey {
-        case lat = "lat"
-        case long = "long"
-        case id = "id"
-    }
-    func encode() -> Data {
-        let jsonData = try! jsonEncoder.encode(self)
-        return jsonData
-    }
-}
-
-protocol Stringfy {}
-
-extension Stringfy {
-    func toString(data:Data) -> String {
-        return String(data:data, encoding: .utf8)!
-    }
-}
-extension Data:Stringfy {}
-
-
-
