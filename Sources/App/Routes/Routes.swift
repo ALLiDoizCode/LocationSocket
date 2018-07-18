@@ -2,6 +2,9 @@ import Vapor
 
 extension Droplet {
     func setupRoutes() throws {
+        
+        LocationSocket(drop: self)
+        
         get("hello") { req in
             var json = JSON()
             try json.set("hello", "world")
