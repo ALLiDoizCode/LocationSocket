@@ -33,7 +33,10 @@ final class LocationSocket {
                 }
             }
             
-            ws.onClose = { ws, code, reason, clean in
+            ws.onClose = { sock, code, reason, clean in
+            
+                let index = self.socks.index(where: {$0 === sock})
+                self.socks.remove(at: index!)
                 print("Closed.")
             }
         })
